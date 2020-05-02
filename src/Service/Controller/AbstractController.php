@@ -59,4 +59,17 @@ abstract class AbstractController
     {
         $this->renderer = $renderer;
     }
+
+    /**
+     * @param array $json
+     * @param int $http_code
+     *
+     * @return Response
+     */
+    final protected function json(array $json, int $http_code = 200): Response
+    {
+        return new Response(json_encode($json), $http_code, [
+            'Content-Type' => 'application/json',
+        ]);
+    }
 }

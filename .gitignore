@@ -4,7 +4,7 @@
 # composer
 composer.phar
 /composer.lock
-/vendor/
+/vendor
 /.php_cs.cache
 
 # npm/yarn
@@ -20,5 +20,5 @@ composer.phar
 /.env.test
 /log
 /public/build
-/tests/coverage
+/ic
 /var

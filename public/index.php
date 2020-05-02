@@ -1,7 +1,8 @@
 <?php
 
 use App\App;
-use DI\ContainerBuilder;
+    use DebugBar\StandardDebugBar;
+    use DI\ContainerBuilder;
 use Symfony\Component\Dotenv\Dotenv;
 
 
@@ -20,6 +21,7 @@ define('VIEW_FOLDER', BASE_FOLDER.'views/');
 // load env
 $dotenv = new Dotenv();
 $dotenv->load(__DIR__.'/../.env', __DIR__.'/../.env.local');
+define('ENV', $_ENV['ENV']);
 
 
 // DI
@@ -29,6 +31,4 @@ $container = $containerBuilder->build();
 
 
 // handle request
-$app = new App($container);
-$app->run();
-
+$container->call([App::class, 'run']);

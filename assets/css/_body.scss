@@ -19,3 +19,21 @@ h1 {
 .b-rad {
   border-radius: 5px;
 }
+
+#php-error {
+    p {
+        text-align: center;
+    }
+
+    table {
+        margin: auto;
+
+        tr {
+            border-bottom: 1px solid $body-color;
+
+            td{
+                padding: 0 5px;
+            }
+        }
+    }
+}

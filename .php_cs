@@ -11,7 +11,7 @@ return PhpCsFixer\Config::create()
         'array_indentation'                           => true,
         'array_syntax'                                => [ 'syntax' => 'short' ],
         'blank_line_before_statement' => [
-	        'statements' => ['break', 'continue', 'declare', 'for', 'foreach', 'if', 'return', 'switch', 'throw', 'try', 'while'], // if else elseif impossible ???
+	        'statements' => ['break', 'continue', 'declare', 'for', 'foreach', 'if', 'switch', 'throw', 'try', 'while'], // if else elseif impossible ???
 		],
         'declare_strict_types'                        => true,
         'dir_constant'                                => true,

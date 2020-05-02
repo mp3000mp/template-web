@@ -1,10 +1,10 @@
 <?php
-	
+
 	$title = $title ?? 'template';
 	$activeMenu = $activeMenu ?? '';
 	$subMenu = $subMenu ?? '';
 	$activeMenu2 = $activeMenu2 ?? '';
-	
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -15,7 +15,11 @@
     <link rel="icon" href="/img/favicon.png" />
 
     <script type="text/javascript" src="/build/bundle.js"></script>
-    
+
+    <?php if(ENV !== 'prod'){
+        echo $this->renderDebugBarAssets();
+    } ?>
+
 </head>
 <body>
     <?php $this->insert('menu/main', [
@@ -27,5 +31,8 @@
 	    <?= $this->section('content') ?>
     </main>
     <?php $this->insert('layout/footer') ?>
+    <?php if(ENV !== 'prod'){
+        echo $this->renderDebugBar();
+    } ?>
 </body>
 </html>

@@ -1,15 +1,15 @@
 <?php
-/**
-* @var string $msg
- */
+    /**
+     * @var string $msg
+     */
 ?>
 
 <?php $this->layout('base', [
-	'title' => 'Home page',
+    'title' => '404 not found',
 ]) ?>
 
 <div class="container">
-    <h1><?= $this->trans('menu.home') ?></h1>
+    <h1>404 not found</h1>
 
     <p><?= $this->trans('msg') ?></p>
 </div>

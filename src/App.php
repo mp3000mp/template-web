@@ -2,7 +2,9 @@
 
 namespace App;
 
-use Psr\Container\ContainerInterface;
+use App\Controller\ErrorController;
+use App\Service\Router\RouterService;
+use DI\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -13,81 +15,63 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class App
 {
-    /** @var ContainerInterface */
+    /** @var Container  */
     private $container;
+    /** @var Request  */
+    private $request;
+    /** @var RouterService  */
+    private $routerService;
 
     /**
      * App constructor.
      *
-     * @param ContainerInterface $container
+     * @param RouterService $routerService
      */
-    public function __construct(ContainerInterface $container)
+    public function __construct(Container $container, Request $request, RouterService $routerService)
     {
         $this->container = $container;
+        $this->request = $request;
+        $this->routerService = $routerService;
     }
 
+    /**
+     * init application
+     */
     public function run(): void
     {
+        list($scope, $controller, $action, $params) = $this->routerService->getController($this->request->getMethod(), $this->request->getRequestUri());
 
-        // load request/session
-        /** @var Request $request */
-        $request = $this->container->get('request');
-
-        // load router
-        /** @var \AltoRouter $router */
-        $router = $this->container->get('router');
-
-        // find route
-        $match = $router->match($request->getRequestUri(), $request->getMethod());
-
-        if (false !== $match) {
-            list($controller, $action) = explode('#', $match['target']);
-            $controller = 'App\\Controller\\' . $controller;
-            $params = $match['params'];
-            $routeName = $match['name'];
-
-            if (!is_callable([$controller, $action])) {
-                $controller = 'App\\Controller\\ErrorController';
-                $action = 'error';
-                $params = ['message' => sprintf('Controller method "%s" unfound', $match['target'])];
-            } else {
-                $scope = $this->getScope($routeName);
-            }
-        } else {
-            $controller = 'App\\Controller\\ErrorController';
-            $action = 'error'; // or is it 405
-            $params = ['message' => '404', 404];
+        if (!is_callable([$controller, $action])) {
+            $params     = ['message' => sprintf('Controller method "%s" unfound', "{$controller}#{$action}")];
+            $controller = ErrorController::class;
+            $action     = 'error';
         }
 
         // call controller
         /** @var Response $response */
         $controller = $this->container->get($controller);
 
-        if (false === mb_stripos($scope, 'json')) {
+        // if not json, we need renderer
+        $isJson = false !== mb_stripos($scope, 'json');
+
+        if (!$isJson) {
             $controller->loadRenderer($this->container->get('renderer'));
         }
-        $response = $this->container->call([$controller, $action], $params);
 
-        // send response
-        $response->send();
-    }
+        // call controller
+        try {
+            $response = $this->container->call([$controller, $action], $params);
+        } catch (\Exception $e) {
+            $controller = ErrorController::class;
+            $action     = 'error';
+            $params     = ['error' => $e, 'status' => 500, 'isJson' => $isJson];
+            $controller = $this->container->get($controller);
 
-    /**
-     * @param string $routeName
-     *
-     * @return string
-     */
-    private function getScope(string $routeName): string
-    {
-        $config = $this->container->get('config');
-        $routeConfig = $config->get('app.routes');
-
-        foreach ($routeConfig as $scope => $routes) {
-            if (array_key_exists($routeName, $routes)) {
-                return $scope;
+            if (!$isJson) {
+                $controller->loadRenderer($this->container->get('renderer'));
             }
+            $response = $this->container->call([$controller, $action], $params);
         }
-
-        return 'private';
+        $response->send();
     }
 }

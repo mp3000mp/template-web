@@ -17,6 +17,8 @@ class AppController extends AbstractController
 {
     /**
      * @param string $lang
+     *
+     * @return RedirectResponse
      */
     public function lang(string $lang, Request $request, Translator $translator): RedirectResponse
     {
@@ -27,6 +29,8 @@ class AppController extends AbstractController
     }
 
     /**
+     * @param Translator $translator
+     *
      * @return Response
      */
     public function home(Translator $translator): Response
@@ -38,6 +42,8 @@ class AppController extends AbstractController
 
     /**
      * @return Response
+     *
+     * @throws \Exception
      */
     public function test(): Response
     {
@@ -52,5 +58,13 @@ class AppController extends AbstractController
         return $this->renderView('app/test', [
 
         ]);
+    }
+
+    /**
+     * @return Response
+     */
+    public function ping(): Response
+    {
+        return $this->json(['msg' => 'pong']);
     }
 }

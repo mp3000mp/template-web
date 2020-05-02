@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -9,16 +10,21 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * @package App\Controller
  */
-class ErrorController
+class ErrorController extends AbstractController
 {
     /**
-     * @param string $message
+     * @param \Exception $error
      * @param int $status
+     * @param bool $isJson
      *
      * @return Response
      */
-    public function error(string $message, int $status = 500): Response
+    public function error(\Exception $error, int $status = 500, $isJson = false): Response
     {
-        return new Response($message, $status);
+        if ($isJson) {
+            return $this->json(['error' => $status, 'msg' => $error->getMessage()], $status);
+        } else {
+            return $this->renderView("error/{$status}", ['error' => $error]);
+        }
     }
 }

@@ -3,7 +3,7 @@
 /**
  * define routes here
  */
-	
+
 $routes = [
 	'public' => [],
 	'private' => [],
@@ -22,7 +22,7 @@ $routes['private'] = [
 ];
 
 $routes['json_public'] = [
-
+    'ping' => ['GET', '/ping', 'AppController#ping'],
 ];
 
 $routes['json_private'] = [

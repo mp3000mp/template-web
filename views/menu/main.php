@@ -16,7 +16,7 @@
                     <ul class="navbar-nav" id="nav1">
                         <li class="nav-item">
                             <a class="nav-link" href="<?= $this->genUrl('home') ?>">
-                                <i title="Home" class="fa fa-home"></i>
+                                <i title="<?= $this->trans('menu.home') ?>" class="fa fa-home"></i>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -34,15 +34,15 @@
                 <ul class="navbar-nav navbar-right" id="nav3">
                     <li class="nav-item dropdown">
                         <ul id="flags">
-                            <li class="mx-3 mx-lg-1"><a href="<?= $this->genUrl('lang', ['lang' => 'en']) ?>" title="Français"><img src="/img/app/flags/en.png" alt="en"></a></li>
-                            <li class="mx-3 mx-lg-1"><a href="<?= $this->genUrl('lang', ['lang' => 'fr']) ?>" title="English"><img src="/img/app/flags/fr.png" alt="fr"></a></li>
+                            <li class="mx-3 mx-lg-1"><a href="<?= $this->genUrl('lang', ['lang' => 'en']) ?>" title="English"><img src="/img/app/flags/en.png" alt="en"></a></li>
+                            <li class="mx-3 mx-lg-1"><a href="<?= $this->genUrl('lang', ['lang' => 'fr']) ?>" title="Français"><img src="/img/app/flags/fr.png" alt="fr"></a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" title="My account" href="/profile">My account</a>
+                        <a class="nav-link" title="<?= $this->trans('menu.my_account') ?>" href="/profile"><?= $this->trans('menu.my_account') ?></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" title="Log out" href="/logout"><i class="fa fa-sign-out-alt"></i></a>
+                        <a class="nav-link" title="<?= $this->trans('menu.log_out') ?>" href="/logout"><i class="fa fa-sign-out-alt"></i></a>
                     </li>
                 </ul>
             </div>

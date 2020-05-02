@@ -1,7 +1,10 @@
 <?php
 
+use App\Service\Renderer\DebugBarExtension;
 use App\Service\Renderer\RouterExtension;
 use App\Service\Renderer\TranslatorExtension;
+use App\Service\Router\RouterService;
+use DebugBar\StandardDebugBar;
 use Noodlehaus\Config;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -19,7 +22,7 @@ return [
 	'request' => get( Request::class),
 	'router' => get(AltoRouter::class),
 	'translator' => get( Translator::class),
-	
+
 	// router
 	AltoRouter::class => function(Config $config)
 	{
@@ -33,24 +36,32 @@ return [
 		}
 		return $router;
 	},
-	
+
+    // router service
+    RouterService::class => autowire()->constructorParameter('routesConfig', value(function(Config $config){
+        return $config->get('app.routes');
+    })->getValue()),
+
 	// config
 	Config::class => function()
 	{
 		$config = new Config(CONFIG_FOLDER.'config.yml');
 		return $config;
 	},
-	
+
 	// renderer
-	Engine::class => function(AltoRouter $router, Translator $translator)
+	Engine::class => function(AltoRouter $router, Translator $translator, ?StandardDebugBar $debugBar)
 	{
 		$engine = new League\Plates\Engine(VIEW_FOLDER);
 		$engine->loadExtension(new RouterExtension($router));
 		$engine->loadExtension(new TranslatorExtension($translator));
+		if(ENV !== 'prod'){
+            $engine->loadExtension(new DebugBarExtension($debugBar));
+        }
 		//$engine->loadExtension(new League\Plates\Extension\Asset(ASSET_FOLDER, true));
 		return $engine;
 	},
-	
+
 	// request
 	Request::class => function()
 	{
@@ -58,7 +69,16 @@ return [
 		$request->setSession(new Session());
 		return $request;
 	},
-	
+
+    // debug bar
+    StandardDebugBar::class => function()
+    {
+        if(ENV !== 'prod'){
+            return new StandardDebugBar();
+        }
+        return null;
+    },
+
 	// translator
 	Translator::class => function(Config $config, Request $request)
 	{
@@ -73,5 +93,5 @@ return [
 		$translator->setLocale($currentLang);
 		return $translator;
 	}
-	
+
 ];
