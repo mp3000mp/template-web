@@ -39,6 +39,6 @@
     "webpack-cli": "^3.3.11"
   },
   "browserslist": [
-    "last 5 versions"
+    "last 2 versions"
   ]
 }

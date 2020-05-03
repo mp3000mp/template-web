@@ -2,7 +2,6 @@
 /.idea
 
 # composer
-composer.phar
 /composer.lock
 /vendor
 /.php_cs.cache
@@ -15,7 +14,6 @@ composer.phar
 /yarn.lock
 
 # project
-/.env
 /.env.local
 /.env.test
 /log
