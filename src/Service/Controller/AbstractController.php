@@ -21,7 +21,6 @@ abstract class AbstractController
 
     /**
      * @param AltoRouter $router
-     * @param Engine $renderer
      */
     public function __construct(AltoRouter $router)
     {
@@ -30,7 +29,7 @@ abstract class AbstractController
 
     /**
      * @param string $view
-     * @param array $params
+     * @param array<mixed> $params
      *
      * @return Response
      */
@@ -41,7 +40,7 @@ abstract class AbstractController
 
     /**
      * @param string $route
-     * @param array $params
+     * @param array<mixed> $params
      *
      * @return RedirectResponse
      *
@@ -61,7 +60,7 @@ abstract class AbstractController
     }
 
     /**
-     * @param array $json
+     * @param array<mixed> $json
      * @param int $http_code
      *
      * @return Response

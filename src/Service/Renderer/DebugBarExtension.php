@@ -14,7 +14,7 @@ use League\Plates\Extension\ExtensionInterface;
  */
 class DebugBarExtension implements ExtensionInterface
 {
-    /** @var AltoRouter  */
+    /** @var StandardDebugBar  */
     private $debugBar;
 
     /**

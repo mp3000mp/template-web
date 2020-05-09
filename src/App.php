@@ -48,7 +48,6 @@ class App
         }
 
         // call controller
-        /** @var Response $response */
         $controller = $this->container->get($controller);
 
         // if not json, we need renderer

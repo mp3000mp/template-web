@@ -36,13 +36,13 @@ class RouterExtension implements ExtensionInterface
 
     /**
      * @param string $route
-     * @param array $params
+     * @param mixed[] $params
      *
      * @return string
      *
      * @throws \Exception
      */
-    public function getUrl(string $route, array $params = [])
+    public function getUrl(string $route, array $params = []): string
     {
         return $this->router->generate($route, $params);
     }

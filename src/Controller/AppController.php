@@ -25,7 +25,7 @@ class AppController extends AbstractController
         $translator->setLocale($lang);
         $request->getSession()->set('lang', $lang);
 
-        return new RedirectResponse($request->headers->get('referer'));
+        return new RedirectResponse($request->headers->get('referer', '/'));
     }
 
     /**
